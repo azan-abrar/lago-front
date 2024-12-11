@@ -33,6 +33,10 @@ import {
   AddLagoTaxManagementDialogRef,
 } from '~/components/settings/integrations/AddLagoTaxManagementDialog'
 import {
+  AddMoneyhashDialog,
+  AddMoneyhashDialogRef,
+} from '~/components/settings/integrations/AddMoneyhashDialog'
+import {
   AddNetsuiteDialog,
   AddNetsuiteDialogRef,
 } from '~/components/settings/integrations/AddNetsuiteDialog'
@@ -52,6 +56,7 @@ import {
   ANROK_INTEGRATION_ROUTE,
   GOCARDLESS_INTEGRATION_ROUTE,
   HUBSPOT_INTEGRATION_ROUTE,
+  MONEYHASH_INTEGRATION_ROUTE,
   NETSUITE_INTEGRATION_ROUTE,
   STRIPE_INTEGRATION_ROUTE,
   TAX_MANAGEMENT_INTEGRATION_ROUTE,
@@ -68,6 +73,7 @@ import GoCardless from '~/public/images/gocardless.svg'
 import HightTouch from '~/public/images/hightouch.svg'
 import Hubspot from '~/public/images/hubspot.svg'
 import LagoTaxManagement from '~/public/images/lago-tax-management.svg'
+import Moneyhash from '~/public/images/moneyhash.svg'
 import Netsuite from '~/public/images/netsuite.svg'
 import Oso from '~/public/images/oso.svg'
 import Segment from '~/public/images/segment.svg'
@@ -84,6 +90,10 @@ gql`
 
     paymentProviders(limit: $limit) {
       collection {
+        ... on MoneyhashProvider {
+          id
+        }
+
         ... on StripeProvider {
           id
         }
@@ -126,6 +136,7 @@ const Integrations = () => {
   const addAnrokDialogRef = useRef<AddAnrokDialogRef>(null)
   const addStripeDialogRef = useRef<AddStripeDialogRef>(null)
   const addAdyenDialogRef = useRef<AddAdyenDialogRef>(null)
+  const addMoneyhashDialogRef = useRef<AddMoneyhashDialogRef>(null)
   const addGocardlessDialogRef = useRef<AddGocardlessDialogRef>(null)
   const addLagoTaxManagementDialog = useRef<AddLagoTaxManagementDialogRef>(null)
   const addNetsuiteDialogRef = useRef<AddNetsuiteDialogRef>(null)
@@ -139,6 +150,9 @@ const Integrations = () => {
   const organization = data?.organization
   const hasAdyenIntegration = data?.paymentProviders?.collection?.some(
     (provider) => provider?.__typename === 'AdyenProvider',
+  )
+  const hasMoneyhashIntegration = data?.paymentProviders?.collection?.some(
+    (provider) => provider?.__typename === 'MoneyhashProvider',
   )
   const hasStripeIntegration = data?.paymentProviders?.collection?.some(
     (provider) => provider?.__typename === 'StripeProvider',
@@ -428,7 +442,6 @@ const Integrations = () => {
                 }}
                 fullWidth
               />
-
               <Selector
                 fullWidth
                 title={translate('text_6672ebb8b1b50be550eccaf8')}
@@ -460,6 +473,31 @@ const Integrations = () => {
                   }
                 }}
               />
+              <Selector
+                title={translate('text_1733427981129n3wxjui0bex')}
+                subtitle={translate('text_634ea0ecc6147de10ddb6631')}
+                icon={
+                  <Avatar size="big" variant="connector-full">
+                    <Moneyhash />
+                  </Avatar>
+                }
+                endIcon={
+                  hasMoneyhashIntegration ? (
+                    <Chip label={translate('text_62b1edddbf5f461ab97127ad')} />
+                  ) : undefined
+                }
+                onClick={() => {
+                  if (hasMoneyhashIntegration) {
+                    navigate(MONEYHASH_INTEGRATION_ROUTE)
+                  } else {
+                    const element = document.activeElement as HTMLElement
+
+                    element.blur && element.blur()
+                    addMoneyhashDialogRef.current?.openDialog()
+                  }
+                }}
+                fullWidth
+              />
             </SettingsListItem>
           )}
         </SettingsListWrapper>
@@ -467,6 +505,7 @@ const Integrations = () => {
 
       <AddAnrokDialog ref={addAnrokDialogRef} />
       <AddAdyenDialog ref={addAdyenDialogRef} />
+      <AddMoneyhashDialog ref={addMoneyhashDialogRef} />
       <AddStripeDialog ref={addStripeDialogRef} />
       <AddGocardlessDialog ref={addGocardlessDialogRef} />
       <AddLagoTaxManagementDialog

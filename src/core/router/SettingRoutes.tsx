@@ -39,6 +39,14 @@ const OktaAuthenticationDetails = lazyLoad(
 const AdyenIntegrations = lazyLoad(
   () => import(/* webpackChunkName: 'adyen-integrations' */ '~/pages/settings/AdyenIntegrations'),
 )
+
+const MoneyhashIntegrations = lazyLoad(
+  () =>
+    import(
+      /* webpackChunkName: 'moneyhash-integrations' */ '~/pages/settings/MoneyhashIntegrations'
+    ),
+)
+
 const NetsuiteIntegrations = lazyLoad(
   () =>
     import(/* webpackChunkName: 'netsuite-integrations' */ '~/pages/settings/NetsuiteIntegrations'),
@@ -47,6 +55,12 @@ const AdyenIntegrationDetails = lazyLoad(
   () =>
     import(
       /* webpackChunkName: 'adyen-integration-details' */ '~/pages/settings/AdyenIntegrationDetails'
+    ),
+)
+const MoneyhashIntegrationDetails = lazyLoad(
+  () =>
+    import(
+      /* webpackChunkName: 'moneyhash-integration-details' */ '~/pages/settings/MoneyhashIntegrationDetails'
     ),
 )
 const HubspotIntegrations = lazyLoad(
@@ -132,7 +146,9 @@ export const OKTA_AUTHENTICATION_ROUTE = `${AUTHENTICATION_ROUTE}/okta/:integrat
 export const ANROK_INTEGRATION_ROUTE = `${INTEGRATIONS_ROUTE}/anrok`
 export const ANROK_INTEGRATION_DETAILS_ROUTE = `${INTEGRATIONS_ROUTE}/anrok/:integrationId/:tab`
 export const ADYEN_INTEGRATION_ROUTE = `${INTEGRATIONS_ROUTE}/adyen`
+export const MONEYHASH_INTEGRATION_ROUTE = `${INTEGRATIONS_ROUTE}/moneyhash`
 export const ADYEN_INTEGRATION_DETAILS_ROUTE = `${INTEGRATIONS_ROUTE}/adyen/:integrationId`
+export const MONEYHASH_INTEGRATION_DETAILS_ROUTE = `${INTEGRATIONS_ROUTE}/moneyhash/:integrationId`
 export const HUBSPOT_INTEGRATION_ROUTE = `${INTEGRATIONS_ROUTE}/hubspot`
 export const HUBSPOT_INTEGRATION_DETAILS_ROUTE = `${INTEGRATIONS_ROUTE}/hubspot/:integrationId`
 export const NETSUITE_INTEGRATION_ROUTE = `${INTEGRATIONS_ROUTE}/netsuite`
@@ -223,9 +239,21 @@ export const settingRoutes: CustomRouteObject[] = [
         permissions: ['organizationIntegrationsView'],
       },
       {
+        path: MONEYHASH_INTEGRATION_DETAILS_ROUTE,
+        private: true,
+        element: <MoneyhashIntegrationDetails />,
+        permissions: ['organizationIntegrationsView'],
+      },
+      {
         path: ADYEN_INTEGRATION_ROUTE,
         private: true,
         element: <AdyenIntegrations />,
+        permissions: ['organizationIntegrationsView'],
+      },
+      {
+        path: MONEYHASH_INTEGRATION_ROUTE,
+        private: true,
+        element: <MoneyhashIntegrations />,
         permissions: ['organizationIntegrationsView'],
       },
       {
