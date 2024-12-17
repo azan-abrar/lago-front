@@ -57,6 +57,7 @@ import Netsuite from '~/public/images/netsuite.svg'
 import PSPIcons from '~/public/images/psp-icons.svg'
 import Stripe from '~/public/images/stripe.svg'
 import Xero from '~/public/images/xero.svg'
+import Moneyhash from '~/public/images/moneyhash.svg'
 import { MenuPopper, theme } from '~/styles'
 
 const hubspotExternalIdTypeCopyMap: Record<
@@ -123,6 +124,13 @@ gql`
         }
 
         ... on AdyenProvider {
+          __typename
+          id
+          name
+          code
+        }
+
+        ... on MoneyhashProvider {
           __typename
           id
           name
@@ -470,6 +478,8 @@ export const ExternalAppsAccordion = ({ formikProps, isEdition }: TExternalAppsA
                           <GoCardless />
                         ) : formikProps.values.paymentProvider === ProviderTypeEnum?.Adyen ? (
                           <Adyen />
+                        ) : formikProps.values.paymentProvider === ProviderTypeEnum?.Moneyhash ? (
+                          <Moneyhash />
                         ) : null}
                       </Avatar>
                     ) : (
@@ -555,7 +565,9 @@ export const ExternalAppsAccordion = ({ formikProps, isEdition }: TExternalAppsA
                             ? translate('text_635bdbda84c98758f9bba8aa')
                             : formikProps.values.paymentProvider === ProviderTypeEnum.Adyen
                               ? translate('text_645d0728ea0a5a7bbf76d5c7')
-                              : translate('text_635bdbda84c98758f9bba89e')
+                                : formikProps.values.paymentProvider === ProviderTypeEnum.Moneyhash
+                                  ? translate('text_1733992108437qlovqhjhqj4') 
+                                    :translate('text_635bdbda84c98758f9bba89e')
                         }${
                           formikProps.values.paymentProviderCode
                             ? ` • ${
@@ -579,7 +591,11 @@ export const ExternalAppsAccordion = ({ formikProps, isEdition }: TExternalAppsA
                     </>
                   )}
                 </Stack>
-
+                {formikProps.values.paymentProvider === ProviderTypeEnum.Moneyhash && (
+                  <Stack gap={6} padding={4} borderTop={`1px solid ${theme.palette.grey[400]}`}>
+                    <Alert type="info">{translate('text_64aeb7b998c4322918c84214')}</Alert>
+                  </Stack>
+                )}
                 {formikProps.values.paymentProvider === ProviderTypeEnum.Stripe && (
                   <Stack gap={6} padding={4} borderTop={`1px solid ${theme.palette.grey[400]}`}>
                     <Stack>

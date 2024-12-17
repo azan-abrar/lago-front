@@ -131,6 +131,18 @@ export type AdyenProvider = {
   successRedirectUrl?: Maybe<Scalars['String']['output']>;
 };
 
+export type MoneyhashProvider = {
+  __typename?: 'MoneyhashProvider';
+  apiKey?: Maybe<Scalars['String']['output']>;
+  code: Scalars['String']['output'];
+  successRedirectUrl?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  failedRedirectUrl?: Maybe<Scalars['String']['output']>;
+  pendingRedirectUrl?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  webhookRedirectUrl?: Maybe<Scalars['String']['output']>;
+};
+
 export enum AggregationTypeEnum {
   CountAgg = 'count_agg',
   CustomAgg = 'custom_agg',
@@ -4000,7 +4012,7 @@ export type OverdueBalanceCollection = {
   metadata: CollectionMetadata;
 };
 
-export type PaymentProvider = AdyenProvider | GocardlessProvider | StripeProvider;
+export type PaymentProvider = AdyenProvider | GocardlessProvider | StripeProvider | MoneyhashProvider;
 
 /** PaymentProviderCollection type */
 export type PaymentProviderCollection = {
@@ -6478,7 +6490,7 @@ export type PaymentProvidersListForCustomerCreateEditExternalAppsAccordionQueryV
 }>;
 
 
-export type PaymentProvidersListForCustomerCreateEditExternalAppsAccordionQuery = { __typename?: 'Query', paymentProviders?: { __typename?: 'PaymentProviderCollection', collection: Array<{ __typename: 'AdyenProvider', id: string, name: string, code: string } | { __typename: 'GocardlessProvider', id: string, name: string, code: string } | { __typename: 'StripeProvider', id: string, name: string, code: string }> } | null };
+export type PaymentProvidersListForCustomerCreateEditExternalAppsAccordionQuery = { __typename?: 'Query', paymentProviders?: { __typename?: 'PaymentProviderCollection', collection: Array<{ __typename: 'AdyenProvider', id: string, name: string, code: string } | { __typename: 'MoneyhashProvider', id: string, name: string, code: string }  | { __typename: 'GocardlessProvider', id: string, name: string, code: string } | { __typename: 'StripeProvider', id: string, name: string, code: string }> }  | null };
 
 export type AccountingIntegrationsListForCustomerEditExternalAppsAccordionQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -13004,6 +13016,11 @@ export const PaymentProvidersListForCustomerMainInfosDocument = gql`
         name
         code
       }
+      ... on MoneyhashProvider {
+        id
+        name
+        code
+      }
     }
   }
 }
@@ -13650,6 +13667,13 @@ export const PaymentProvidersListForCustomerCreateEditExternalAppsAccordionDocum
         code
       }
       ... on AdyenProvider {
+        __typename
+        id
+        name
+        code
+      }
+
+      ... on MoneyhashProvider {
         __typename
         id
         name

@@ -35,6 +35,7 @@ import Hubspot from '~/public/images/hubspot.svg'
 import Netsuite from '~/public/images/netsuite.svg'
 import Stripe from '~/public/images/stripe.svg'
 import Xero from '~/public/images/xero.svg'
+import Moneyhash from '~/public/images/moneyhash.svg'
 import { theme } from '~/styles'
 
 const PaymentProviderMethodTranslationsLookup = {
@@ -127,6 +128,12 @@ gql`
         }
 
         ... on AdyenProvider {
+          id
+          name
+          code
+        }
+
+        ... on MoneyhashProvider {
           id
           name
           code
@@ -433,6 +440,8 @@ export const CustomerMainInfos = ({ loading, customer, onEdit }: CustomerMainInf
                   <Stripe />
                 ) : paymentProvider === ProviderTypeEnum?.Gocardless ? (
                   <Gocardless />
+                ) : paymentProvider === ProviderTypeEnum?.Moneyhash ? (
+                  <Moneyhash />
                 ) : paymentProvider === ProviderTypeEnum?.Adyen ? (
                   <Adyen />
                 ) : null}
